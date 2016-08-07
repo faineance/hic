@@ -5,7 +5,7 @@ module Main where
 import           Control.Applicative
 import           Data.Functor.Identity
 
-data Vec3 a = Vec3 !a !a !a deriving (Eq,Ord,Show, Functor, Foldable, Traversable)
+data Vec3 a = Vec3 !a !a !a deriving (Eq, Ord, Show, Functor, Foldable, Traversable)
 
 _x, _y, _z :: Functor f => (a -> f a) -> Vec3 a -> f (Vec3 a)
 _x f (Vec3 x y z) = (\x' -> Vec3 x' y z) <$> f x
@@ -56,11 +56,22 @@ type Grid = M33 Square
 
 data Game = Turn Team Grid | Won Team Grid | Draw Grid
 
+
 initialGrid :: Grid
 initialGrid = Vec3 emptyRow emptyRow emptyRow
     where
         emptyRow = Vec3 Nothing Nothing Nothing
+-- place :: ((a -> Identity b) -> (Grid -> Identity t)) -> Team -> Grid -> Grid
 
+place pos team = set pos (Just team)
+
+-- win :: Grid -> Maybe Team
+-- win = undefined
+--
+-- rows team (Vec3 a b c) = a == b && b == c && a == c && a == Just team
+
+
+-- step :: Game -> Game
 
 main :: IO ()
 main = putStrLn "hello world"
