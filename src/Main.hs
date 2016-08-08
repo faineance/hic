@@ -35,7 +35,7 @@ right = _z
 --
 -- >>> over (_x . traverse) (\x -> Just X) initialGrid
 --
--- And if Cell had a monoid instance.
+-- And if Team had a monoid instance. 
 -- >> view (traverse . traverse) initialGrid
 
 view ::  ((a -> Const a b) -> s -> Const a t) -> s -> a
@@ -62,6 +62,8 @@ initialGrid = Vec3 emptyRow emptyRow emptyRow
     where
         emptyRow = Vec3 Nothing Nothing Nothing
 -- place :: ((a -> Identity b) -> (Grid -> Identity t)) -> Team -> Grid -> Grid
+
+-- foldl (\grid loc -> place loc X grid) initialGrid [(top . traverse), (bottom . right)]
 
 place pos team = set pos (Just team)
 
