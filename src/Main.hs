@@ -35,7 +35,7 @@ right = _z
 --
 -- >>> over (_x . traverse) (\x -> Just X) initialGrid
 --
--- And if Team had a monoid instance. 
+-- And if Team had a monoid instance.
 -- >> view (traverse . traverse) initialGrid
 
 view ::  ((a -> Const a b) -> s -> Const a t) -> s -> a
@@ -66,9 +66,16 @@ initialGrid = Vec3 emptyRow emptyRow emptyRow
 -- foldl (\grid loc -> place loc X grid) initialGrid [(top . traverse), (bottom . right)]
 
 place pos team = set pos (Just team)
+--
+-- winner :: Grid -> Maybe Team
+-- winner = case ((didWin X), (didWin 0)) of
+--         (True, False) ->
 
--- win :: Grid -> Maybe Team
--- win = undefined
+rows,cols,diags ::  Functor f => [[(a -> f a) -> M33 a -> f (M33 a)]]
+rows = [[f . g | g <- [top,middle,bottom]] | f <- [left,center, right]]
+cols = [[f . g | f <- [left,center,right]] | g <- [top,middle,bottom]]
+diags = [[top . left, middle . center, bottom . right],[top . right, middle . center, bottom . left]]
+
 --
 -- rows team (Vec3 a b c) = a == b && b == c && a == c && a == Just team
 
